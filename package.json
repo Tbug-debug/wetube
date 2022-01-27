@@ -1,0 +1,22 @@
+{
+  "name": "wetub",
+  "version": "1.0.0",
+  "description": "The best way",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tbug-debug/wetube.git"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "LEE HAN GYEOL",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tbug-debug/wetube/issues"
+  },
+  "homepage": "https://github.com/Tbug-debug/wetube#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
