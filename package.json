@@ -8,7 +8,7 @@
     "url": "git+https://github.com/Tbug-debug/wetube.git"
   },
   "scripts": {
-    "start": "node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "LEE HAN GYEOL",
   "license": "MIT",
@@ -18,5 +18,11 @@
   "homepage": "https://github.com/Tbug-debug/wetube#readme",
   "dependencies": {
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.12",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
   }
 }
