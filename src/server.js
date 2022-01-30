@@ -4,16 +4,17 @@ const PORT = 4000;
 
 const app = express();
 
+const logger = (req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+};
+
 const handleHome = (req, res) => {
-  return res.send("Fuck you");
+  return res.send("Fuck you middleware");
 };
 
-const handleLogin = (req, res) => {
-  return res.send("Fuck you login");
-};
+app.get("/", logger, handleHome);
 
-app.get("/", handleHome);
-app.get("/login", handleLogin);
 const serverListening = () =>
   console.log(`Sever listening on port http://localhost:${PORT}`);
 
