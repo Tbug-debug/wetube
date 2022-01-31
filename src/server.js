@@ -15,7 +15,7 @@ const handleHome = (req, res) => {
   /*controller에는 req(request)와 res(respond)와 next라는 argument가 있다.
   위의 req와 res는 express에서 기본적으로 제공해주는 것이다.*/
   return res.send("Fuck you middleware");
-  //브라우저가 request한 것을 respond로 받아주고 있다.
+  //get으로 받은 것을 respond로 답해주고 있다.
 };
 
 app.get("/", logger, handleHome); //브라우저가 request한 것을 get으로 받음.
