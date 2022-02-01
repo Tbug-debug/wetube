@@ -1,15 +1,12 @@
 import express from "express"; //node_modules/express에서 express를 import함.
+import morgan from "morgan";
 
 const PORT = 4000; // port 4000번을 호출함.
 
 const app = express();
 /*app 변수를 만들어서, express 함수를 호출함.
 이렇게 호출할 경우 express application을 바로 사용할 수 있게 return할 수 있음.*/
-
-const logger = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-};
+const logger = morgan("dev");
 
 const handleHome = (req, res) => {
   /*controller에는 req(request)와 res(respond)와 next라는 argument가 있다.
@@ -18,7 +15,13 @@ const handleHome = (req, res) => {
   //get으로 받은 것을 respond로 답해주고 있다.
 };
 
-app.get("/", logger, handleHome); //브라우저가 request한 것을 get으로 받음.
+const handleLogin = (req, res) => {
+  return res.send("Fuck you login");
+};
+
+app.use(logger);
+app.get("/", handleHome); //브라우저가 request한 것을 get으로 받음.
+app.get("/login", handleLogin);
 
 const serverListening = () =>
   console.log(`Sever listening on port http://localhost:${PORT}`);
