@@ -10,8 +10,10 @@ const app = express();
 /*app 변수를 만들어서, express 함수를 호출함.
 이렇게 호출할 경우 express application을 바로 사용할 수 있게 return할 수 있음.*/
 const logger = morgan("dev");
-app.use(logger);
 
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
+app.use(logger);
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
