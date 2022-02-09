@@ -1,16 +1,15 @@
 import express from "express";
 import {
   watch,
-  edit,
+  getEdit,
   upload,
   deleteVideo,
+  postEdit,
 } from "../controllers/videoController"; //default로 export를 하지 않았을때.
 
 const videoRouter = express.Router();
 
 videoRouter.get("/:id(\\d+)", watch);
-videoRouter.get("/:id(\\d+)/edit", edit);
-videoRouter.get("/:id(\\d+)/delete", deleteVideo);
-videoRouter.get("/upload", upload);
+videoRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
 
 export default videoRouter;
