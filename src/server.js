@@ -1,3 +1,5 @@
+import "./db";
+import "./models/Video";
 import express from "express"; //node_modules/express에서 express를 import함.
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouters"; //default로 export를 하였을때.
