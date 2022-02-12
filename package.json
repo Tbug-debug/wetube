@@ -8,7 +8,7 @@
     "url": "git+https://github.com/Tbug-debug/wetube.git"
   },
   "scripts": {
-    "dev": "nodemon --exec npx babel-node src/server.js"
+    "dev": "nodemon --exec npx babel-node src/init.js"
   },
   "author": "LEE HAN GYEOL",
   "license": "MIT",
