@@ -1,5 +1,13 @@
-extends base.pug
+extends base
+
+block upload
+ nav
+     ul 
+         li 
+             a(href="/") Home
 
 block content
-    h3 #{video.view} #{video.view === 1 ? "view" : "views"}
+    div 
+        p=video.description
+        small=video.createdAt
     a(href=`${video.id}/edit`) Edit Video &rarr;
