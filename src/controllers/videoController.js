@@ -34,16 +34,18 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
-  const video = await Video.findById(id);
+  const video = await Video.exists({ _id: id }); //Video의 object 대신 true false를 받는다.
   if (!video) {
     return res.render("404", { pageTitle: "404 Video not foun" });
   }
-  video.title = title;
-  video.description = description;
-  video.hashtags = hashtags
-    .split(",")
-    .map((word) => (word.startsWith("#") ? word : `#${word}`));
-  await video.save();
+  await Video.findByIdAndUpdate(id, {
+    //findByIdAndUpdate는 id 값을 인자로 받는다.
+    title,
+    description,
+    hashtags: hashtags
+      .split(",")
+      .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+  });
   return res.redirect(`/videos/${id}`);
 };
 
@@ -57,9 +59,7 @@ export const postUpload = async (req, res) => {
     const video = new Video({
       title: title,
       description: description,
-      hashtags: hashtags
-        .split(",")
-        .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+      hashtags,
     });
     await video.save();
     return res.redirect("/");
