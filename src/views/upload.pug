@@ -1,5 +1,13 @@
 extends base.pug
 
+block upload
+    nav
+        ul 
+            li 
+                a(href="/") Home
+            li 
+                a(href="/search") Search
+
 block content 
     if errorMessage
         span=errorMessage
