@@ -1,4 +1,5 @@
 extends base
+include mixins/video
 
 block upload
     nav
@@ -13,3 +14,7 @@ block content
     form(method="GET")
         input(placeholder="Search by title", name="keyword", type="text")
         input(type="submit",value="Search now")
+
+    div
+        each fish in videos 
+            +video(fish)

@@ -10,6 +10,7 @@ const videoSchema = new mongoose.Schema({
     rating: { type: Number, default: 0, required: true },
   },
 });
+//비디오의 모델을 mongodb에게 알려줌.
 
 videoSchema.static("formatHashtags", function (hashtags) {
   return hashtags
