@@ -1,10 +1,14 @@
 extends base
 
+
 block content
+   if errorMassage
+      span=errorMassage
    form(method="POST")
         input(name="name", type="text", required, placeholder="name")
         input(name="email", type="email", required, placeholder="email")
         input(name="username", type="text", required, placeholder="username")
         input(name="password", type="password", required, placeholder="password")
+        input(name="password2", type="password", required, placeholder="Confirm Password")
         input(name="location", type="text", required, placeholder="location")
         input(type="submit", value="Join") 

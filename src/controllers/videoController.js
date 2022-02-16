@@ -27,7 +27,7 @@ export const getEdit = async (req, res) => {
   const video = await Video.findById(id);
   //findById 사용 이유: objec를 edit template으로 보내줘야 하기 때문에 findById가 적헙하다.
   if (!video) {
-    return res.render("404", { pageTitle: "404 Video not foun" });
+    return res.status(404).render("404", { pageTitle: "404 Video not foun" });
   }
   return res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
 };
@@ -39,7 +39,7 @@ export const postEdit = async (req, res) => {
   //Video의 object 대신 true false를 받는다.
   //exists 사용 이유: 여기서는 video object가 필요하지않다. 단순히 영상이 존재하는지만 확인하면 된다.
   if (!video) {
-    return res.render("404", { pageTitle: "404 Video not foun" });
+    return res.status(404).render("404", { pageTitle: "404 Video not foun" });
   }
   await Video.findByIdAndUpdate(id, {
     //findByIdAndUpdate는 id 값을 인자로 받는다.
@@ -65,7 +65,7 @@ export const postUpload = async (req, res) => {
     await video.save();
     return res.redirect("/");
   } catch (error) {
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
     });
