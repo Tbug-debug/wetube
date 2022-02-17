@@ -21,6 +21,14 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use((req, res, next) => {
+  req.sessionStore.all((error, session) => {
+    console.log(session);
+    next();
+  });
+});
+
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
