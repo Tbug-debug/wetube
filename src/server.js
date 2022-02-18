@@ -1,6 +1,7 @@
 import express from "express"; //node_modules/express에서 express를 import함.
 import morgan from "morgan";
 import session from "express-session"; // express 세션을 호출함.
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter"; //default로 export를 하였을때.
 import videoRouter from "./routers/videoRouters";
 import userRouter from "./routers/userRouters";
@@ -23,6 +24,7 @@ app.use(
     //세션을 형성함.
     //세션 middeleware(백엔드)는 브라우저 쿠키에게 세션 ID를 전송함.
     //백엔드에서는 세션에서 생성된 세션 ID를 보관하고 있다.
+    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
   })
 );
 
