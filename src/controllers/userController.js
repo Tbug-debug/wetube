@@ -4,11 +4,13 @@ import bcrypt from "bcrypt";
 export const getjoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
+  // 요청한 html에서 정보들을 저장하고 있다.
   const pageTitle = "Join";
   if (password !== password2) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "Password confirmation does not match",
+      //입력된 비밀번호와 확인을 위한 비밀번호가 동일한지 비교하고 있다.
     });
   }
   const exist = await User.exists({ $or: [{ username }, { email }] });
@@ -18,6 +20,7 @@ export const postJoin = async (req, res) => {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken",
+      //유저이름과 이메일이 db에 존재하는지 동시에 확인하고 있다.
     });
   }
   /*
@@ -43,6 +46,7 @@ export const postJoin = async (req, res) => {
       email,
       password,
       location,
+      // 유저를 만들고 있다.
     });
     return res.redirect("/login");
   } catch (error) {
@@ -59,21 +63,25 @@ export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
   const user = await User.findOne({ username });
+  // user 정보를 db에서 찾는 역할을 한다.
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "An account with this username does not exists.",
+      // db에 있는 user와 유저가 입력한 user 값이 일치한지 일치하지 않은지 비교하고 있다.
     });
   }
   const confirm = await bcrypt.compare(password, user.password);
+  // 비밀번호를 암호화 하는 것을 담당한다.
   if (!confirm) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "Wrong password",
+      //여기는 암호화된 비밀번호를 비교하여 입력된 비밀번호와 db에 저장된 비밀번호를 비교한다.
     });
   }
-  req.session.loggedIn = true;
-  req.session.user = user;
+  req.session.loggedIn = true; //이것은 session object에다가 유저가 로그인 했을 경우 true로 변환한다.
+  req.session.user = user; //이것은 session object에다가 데이터베이스의 user 정보를 입력해준다.
   return res.redirect("/");
 };
 export const edit = (req, res) => res.send("Edit User");

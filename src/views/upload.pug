@@ -2,7 +2,18 @@ extends base.pug
 
 block upload
     nav
-        ul 
+        ul
+            if loggedIn
+                li 
+                    a(href="/logout") Log Out
+                li 
+                    a(href="/my-profile") #{loggedInUser.name} Profile
+            else
+                li 
+                    a(href="/login") Login
+                li 
+                    a(href="/join") Join
+ 
             li 
                 a(href="/") Home
             li 

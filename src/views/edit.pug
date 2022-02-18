@@ -1,5 +1,25 @@
 extends base
 
+block upload
+    nav
+        ul 
+            li 
+                a(href="videos/upload") Upload
+            li 
+                a(href="/search") Search
+            if loggedIn
+                li 
+                    a(href="/logout") Log Out
+                li 
+                    a(href="/my-profile") #{loggedInUser.name} Profile
+            else
+                li 
+                    a(href="/login") Login
+                li 
+                    a(href="/join") Join
+
+
+
 block content
     h4 Update Video
     form(method="POST")
