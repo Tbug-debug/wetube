@@ -18,13 +18,19 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "Hello",
-    resave: true,
-    saveUninitialized: true,
-    //세션을 형성함.
-    //세션 middeleware(백엔드)는 브라우저 쿠키에게 세션 ID를 전송함.
-    //백엔드에서는 세션에서 생성된 세션 ID를 보관하고 있다.
-    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
+    secret: process.env.COOKIE_SECRET,
+    //쿠키에 sign을 하여 우리가 backend가 쿠키를 줬다는 것을 보여주기 위하여 secret을 만든다.
+    resave: false,
+    saveUninitialized: false,
+    /*세션을 형성함.
+      세션 middeleware(백엔드)는 브라우저 쿠키에게 세션 ID를 전송함.
+      백엔드에서는 세션에서 생성된 세션 ID를 보관하고 있다.
+      resave : 모든 request마다 세션의 변경사항이 있든 없든 세션을 다시 저장한다.
+      saveUninitialized : uninitialized 상태인 세션을 저장한다. 여기서 uninitialized 상태인 세션이란 request 때 생성된 이후로 아무런 작업이 가해지지않는 초기상태의 세션을 말한다.
+      resave, saveUninitialized true일 경우, 방문 유저들 전부에게 session ID를 넘겨줌.
+      resave, saveUninitialized false 일 경우, 로그인한 유저에게만 session ID를 넘겨줌.*/
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+    //session 정보를 백엔드에 저장하는 역할을 함.
   })
 );
 

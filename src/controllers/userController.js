@@ -80,8 +80,8 @@ export const postLogin = async (req, res) => {
       //여기는 암호화된 비밀번호를 비교하여 입력된 비밀번호와 db에 저장된 비밀번호를 비교한다.
     });
   }
-  req.session.loggedIn = true; //이것은 session object에다가 유저가 로그인 했을 경우 true로 변환한다.
-  req.session.user = user; //이것은 session object에다가 데이터베이스의 user 정보를 입력해준다.
+  req.session.loggedIn = true; //이것은 session object에다가 유저가 로그인 했을 경우 true로 저장한다.
+  req.session.user = user; //이것은 session object에다가 데이터베이스의 user 정보를 저장한다.
   return res.redirect("/");
 };
 export const edit = (req, res) => res.send("Edit User");
