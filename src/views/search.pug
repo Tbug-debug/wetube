@@ -4,7 +4,11 @@ include mixins/video
 block upload
     nav
         ul 
+            li 
+                a(href="videos/upload") Upload
             if loggedIn
+                li 
+                    a(href="users/edit") Edit Profile
                 li 
                     a(href="/users/logout") Log Out
                 li 
@@ -15,10 +19,10 @@ block upload
                 li 
                     a(href="/join") Join
 
-            li 
-                a(href="/") Home
-            li 
-                a(href="videos/upload") Upload
+                li 
+                    a(href="/") Home
+                li 
+                    a(href="videos/upload") Upload
 
 
 block content

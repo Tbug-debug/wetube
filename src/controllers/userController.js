@@ -65,6 +65,7 @@ export const postLogin = async (req, res) => {
   const pageTitle = "Login";
   const user = await User.findOne({ username, socialOnly: false });
   // user 정보와 github를 통안 로그인이 아닌 회원가입을 했는지 db에서 찾는 역할을 한다.
+  //socialOnly가 false인 경우 wetube 홈페이지에서만 로그인이 가능하다.
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -96,8 +97,8 @@ export const startGithubLogin = (req, res) => {
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
-  //github로 client_id와 scope 그리고 allow_signup을 github baseUrl로 보낸다.
-  //후에 client는 github로 갔다가 다시 finalUrl으로 다시 redirect된다.
+  //github로 client_id와 scope 그리고 allow_signup을 finalUrl로 보낸다.
+  //후에 client는 github로 갔다가 /github/finish으로 redirect된다.
 };
 
 export const finishGithubLogin = async (req, res) => {
@@ -108,7 +109,12 @@ export const finishGithubLogin = async (req, res) => {
     code: req.query.code,
   };
   const params = new URLSearchParams(config).toString();
+  //URL에 쓰기 적합한 형태의 쿼리 문자열을 반환한다.
   const finalUrl = `${baseUrl}?${params}`;
+  /*그러면 scope에 써져있는 데로 정보를 제공하게 된다.
+    동시에 finalUrl에서는 code가 제공된다.
+    code와 config 객체를 다시 finalUrl로 만들어 보낸다.*/
+
   const tokenRequest = await (
     await fetch(finalUrl, {
       method: "POST",
@@ -117,12 +123,12 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
-  /*그러면 scope에 써져있는 데로 정보를 제공하게 된다.
-    동시에 finalUrl에서는 code가 제공된다.
-   그러면 Access token을 받기 위해서 github에서 제공한 github client와
-  github secret 정보 그리고 code를 다시 baseUrl로 보내고 있다.*/
+  /* 그 URL로 POST request를 보내게 된다.*/
+
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
+    /*그러면 github에서 access_token을 준다.*/
+
     const apiUrl = "https://api.github.com";
     const userData = await (
       await fetch(`${apiUrl}/user`, {
@@ -138,14 +144,18 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
+    /*access_token으로 github API에서 user정보와 email 정보를 얻게 된다.*/
+
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
     if (!emailObj) {
       return res.redirect("/login");
     }
-    //위에 코드는 email 중에 primary와 verified가 true인 email을 찾고 있다.
+    // email 중에 primary와 verified가 true인 email을 찾고 있다.
+
     let user = await User.findOne({ email: emailObj.email });
+    //DB에서 email를 찾고 있다.
     if (!user) {
       user = await User.create({
         avatarUrl: userData.avatar_url,
@@ -172,5 +182,11 @@ export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
-export const edit = (req, res) => res.send("Edit User");
+
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = (req, res) => {
+  return res.render("edit-profile");
+};
 export const see = (req, res) => res.send("See User");

@@ -4,7 +4,7 @@ export const localMiddleware = (req, res, next) => {
   //만약 세션 유저가 로그인했다면 locals 도 loggedIn이 참이 될 것이다.
   res.locals.siteName = "WETUBE";
   console.log(res.locals);
-  res.locals.loggedInUser = req.session.user;
+  res.locals.loggedInUser = req.session.user || {};
   // locals object 안에 loggedInUser를 만들고 그 안에 session user 정보를 넣고 있다.
   next();
 };

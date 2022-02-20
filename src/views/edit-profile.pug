@@ -1,0 +1,26 @@
+extends base
+
+block upload
+    nav
+        ul 
+            li 
+                a(href="videos/upload") Upload
+            li 
+                a(href="/search") Search
+            if loggedIn
+                li 
+                    a(href="/users/logout") Log Out
+            else
+                li 
+                    a(href="/login") Login
+                li 
+                    a(href="/join") Join
+
+
+block content 
+    form(method="POST")
+        input(placeholder="Name", name="name", type="text", required, value=loggedInUser.name)
+        input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
+        input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
+        input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
+        input(type="submit", value="Update Profile") 
