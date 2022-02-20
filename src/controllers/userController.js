@@ -21,7 +21,7 @@ export const postJoin = async (req, res) => {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken",
-      //유저이름과 이메일이 db에 존재하는지 동시에 확인하고 있다.
+      //유저이름과 이메일이 db에 존재하는지 동시에 확인하여 에러메시지를 보내고 있다.
     });
   }
   /*
@@ -63,8 +63,8 @@ export const getLogin = (req, res) =>
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
-  const user = await User.findOne({ username });
-  // user 정보를 db에서 찾는 역할을 한다.
+  const user = await User.findOne({ username, socialOnly: false });
+  // user 정보와 github를 통안 로그인이 아닌 회원가입을 했는지 db에서 찾는 역할을 한다.
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -96,7 +96,7 @@ export const startGithubLogin = (req, res) => {
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
-  //github로 client_id와 prameter들을 github baseUrl로 보낸다.
+  //github로 client_id와 scope 그리고 allow_signup을 github baseUrl로 보낸다.
   //후에 client는 github로 갔다가 다시 finalUrl으로 다시 redirect된다.
 };
 
@@ -117,26 +117,60 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
-  /*finalUrl에서는 code가 제공된다.
+  /*그러면 scope에 써져있는 데로 정보를 제공하게 된다.
+    동시에 finalUrl에서는 code가 제공된다.
    그러면 Access token을 받기 위해서 github에서 제공한 github client와
   github secret 정보 그리고 code를 다시 baseUrl로 보내고 있다.*/
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
-    const userRequest = await (
-      await fetch("https://api.github.com/user", {
+    const apiUrl = "https://api.github.com";
+    const userData = await (
+      await fetch(`${apiUrl}/user`, {
         headers: {
           Authorization: `token ${access_token}`,
         },
       })
     ).json();
-    console.log(userRequest);
+    const emailData = await (
+      await fetch(`${apiUrl}/user/emails`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    const emailObj = emailData.find(
+      (email) => email.primary === true && email.verified === true
+    );
+    if (!emailObj) {
+      return res.redirect("/login");
+    }
+    //위에 코드는 email 중에 primary와 verified가 true인 email을 찾고 있다.
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
+        name: userData.name ? userData.name : "Unknown",
+        username: userData.login,
+        email: emailObj.email,
+        password: "",
+        socialOnly: true,
+        location: userData.location,
+      });
+      // 만약 DB에 github email을 가진 user가 없다면, 새로 계정을 만들어 login 시켜준다.
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+    //만약 DB에 같은 email이 존재 할 경우, github로 만들었든, 회원가입을 했던 login을 시켜준다.
   } else {
     return res.redirect("/login");
   }
 };
-//마지막으로 Access token으로 Github API를 사용하여 user 정보를 가져온다.
+//마지막으로 Access token으로 Github API를 사용하여 2가지 user 정보를 가져온다.
 
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
 export const edit = (req, res) => res.send("Edit User");
-export const remove = (req, res) => res.send("Remove User");
-export const logout = (req, res) => res.send("Logout");
 export const see = (req, res) => res.send("See User");
