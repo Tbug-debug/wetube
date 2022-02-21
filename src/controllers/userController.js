@@ -199,10 +199,10 @@ export const postEdit = async (req, res) => {
   const emailAddress = await User.findOne({ email });
   const userName = await User.findOne({ username });
   if (username !== req.session.user.username && userName) {
-    // username = 입력값
-    // req.session.user.username = 세션 object 저장되어있는 값
-    //여기서는 true가 반환 되어야 한다. 왜냐하면 2값이 달라야 변경한다는 걸 의미하기 때문이다.
-    //userName은 db에 있는 값으로 db에 값이 이미 존재하면 true가 나오며, 없으면 false가 나온다.
+    /*username = 입력값
+    req.session.user.username = 세션 object 저장되어있는 값
+    여기서는 true가 반환 되어야 한다. 왜냐하면 2값이 달라야 변경한다는 걸 의미하기 때문이다.
+    userName은 db에 있는 값으로 db에 값이 이미 존재하면 true가 나오며, 없으면 false가 나온다.*/
     return res.status(400).render("edit-profile", {
       pageTitle,
       errorMessage: "This already exist username",
