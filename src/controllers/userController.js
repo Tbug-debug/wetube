@@ -194,7 +194,7 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
   } = req;
   //const id = req.session.user.id
-  //const exist = await User.exists({ $and: [{ username }, { email }] });
+  console.log(req.session.user);
   const pageTitle = "Edit Profile";
   const emailAddress = await User.findOne({ email });
   const userName = await User.findOne({ username });

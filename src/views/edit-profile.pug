@@ -6,7 +6,10 @@ block content
         span=errorMessage
     form(method="POST")
         input(placeholder="Name", name="name", type="text", required, value=loggedInUser.name)
-        input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
+        if loggedInUser.socialOnly
+            input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email, disabled)
+        else
+             input(placeholder="Email", name="email", type="email", required, value=loggedInUser.email)
         input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
         input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
         input(type="submit", value="Update Profile") 
