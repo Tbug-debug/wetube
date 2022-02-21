@@ -257,7 +257,12 @@ export const postChangePassword = async (req, res) => {
   const user = await User.findById(_id); // db에서 user 정보를 찾아온다.
   user.password = newPassword; // db에 password를 새로 입력한 newPassword로 교체한다.
   await user.save(); // db에 저장한다.
-  req.session.user.password = user.password; //세션에 있는 user password도 db에 새로 바뀐 password로 교체한다.
+  req.session.user.password = user.password;
+  /*세션에 있는 user password도 db에 새로 바뀐 password로 교체한다. 
+   교체하는 이유는 로그인을 할 경우 session에 user 정보를 담고 있기 때문에
+   세션 정보를 업데이트하여 비밀번호가 바뀌었다는 것을 새로 갱신해야 
+   비번 교체후에 로그아웃이 된다.
+   */
   return res.redirect("/users/logout");
 };
 
