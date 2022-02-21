@@ -25,6 +25,7 @@ export const postJoin = async (req, res) => {
     });
   }
   /*
+   const usernameExist = await User.exists({ username });
   if (usernameExist) {
     return res.render("join", {
       pageTitle,
