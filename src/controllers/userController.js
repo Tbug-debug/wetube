@@ -198,25 +198,21 @@ export const postEdit = async (req, res) => {
   const pageTitle = "Edit Profile";
   const emailAddress = await User.findOne({ email });
   const userName = await User.findOne({ username });
-  if (username !== req.session.user.username) {
+  if (username !== req.session.user.username && userName) {
     // username = 입력값
     // req.session.user.username = 세션 object 저장되어있는 값
     //여기서는 true가 반환 되어야 한다. 왜냐하면 2값이 달라야 변경한다는 걸 의미하기 때문이다.
-    if (userName) {
-      //exist는 db에 있는 값으로 여기서 true가 나오면 db에 값이 있다는 것이고, false가 있다면 db에 값이 없다는 뜻이 된다.
-      return res.status(400).render("edit-profile", {
-        pageTitle,
-        errorMessage: "This already exist username",
-      });
-    }
+    //userName은 db에 있는 값으로 db에 값이 이미 존재하면 true가 나오며, 없으면 false가 나온다.
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "This already exist username",
+    });
   }
-  if (email !== req.session.user.email) {
-    if (emailAddress) {
-      return res.status(400).render("edit-profile", {
-        pageTitle,
-        errorMessage: "This already exist email",
-      });
-    }
+  if (email !== req.session.user.email && emailAddress) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "This already exist email",
+    });
   }
   const updateUser = await User.findByIdAndUpdate(
     _id,
@@ -230,6 +226,39 @@ export const postEdit = async (req, res) => {
   );
   req.session.user = updateUser;
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordconfirmation },
+  } = req;
+  const ok = await bcrypt.compare(oldPassword, password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password incorrect",
+    });
+  }
+  if (newPassword !== newPasswordconfirmation) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The new password does not match the confirmation",
+    });
+  }
+  const user = await User.findById(_id); // db에서 user 정보를 찾아온다.
+  user.password = newPassword; // db에 password를 새로 입력한 newPassword로 교체한다.
+  await user.save(); // db에 저장한다.
+  req.session.user.password = user.password; //세션에 있는 user password도 db에 새로 바뀐 password로 교체한다.
+  return res.redirect("/users/logout");
 };
 
 export const see = (req, res) => res.send("See User");
