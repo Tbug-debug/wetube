@@ -194,18 +194,29 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
   } = req;
   //const id = req.session.user.id
+  //const exist = await User.exists({ $and: [{ username }, { email }] });
   const pageTitle = "Edit Profile";
+  const emailAddress = await User.findOne({ email });
+  const userName = await User.findOne({ username });
   if (username !== req.session.user.username) {
-    return res.status(400).render("edit-profile", {
-      pageTitle,
-      errorMessage: "This already exist username",
-    });
+    // username = 입력값
+    // req.session.user.username = 세션 object 저장되어있는 값
+    //여기서는 true가 반환 되어야 한다. 왜냐하면 2값이 달라야 변경한다는 걸 의미하기 때문이다.
+    if (userName) {
+      //exist는 db에 있는 값으로 여기서 true가 나오면 db에 값이 있다는 것이고, false가 있다면 db에 값이 없다는 뜻이 된다.
+      return res.status(400).render("edit-profile", {
+        pageTitle,
+        errorMessage: "This already exist username",
+      });
+    }
   }
   if (email !== req.session.user.email) {
-    return res.status(400).render("edit-profile", {
-      pageTitle,
-      errorMessage: "This already exist email",
-    });
+    if (emailAddress) {
+      return res.status(400).render("edit-profile", {
+        pageTitle,
+        errorMessage: "This already exist email",
+      });
+    }
   }
   const updateUser = await User.findByIdAndUpdate(
     _id,
