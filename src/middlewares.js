@@ -8,3 +8,19 @@ export const localMiddleware = (req, res, next) => {
   // locals object 안에 loggedInUser를 만들고 그 안에 session user 정보를 넣고 있다.
   next();
 };
+
+export const protectorMiddleware = (req, res, next) => {
+  if (req.session.loggedIn) {
+    return next();
+  } else {
+    return res.redirect("/login");
+  }
+};
+
+export const publicOnlyMiddleware = (req, res, next) => {
+  if (!req.session.loggedIn) {
+    return next();
+  } else {
+    return res.redirect("/");
+  }
+};

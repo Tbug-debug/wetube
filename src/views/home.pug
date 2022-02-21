@@ -1,25 +1,6 @@
 extends base
 include mixins/video
 
-block upload
-    nav
-        ul 
-            li 
-                a(href="videos/upload") Upload
-            li 
-                a(href="/search") Search
-            if loggedIn
-                li 
-                    a(href="users/edit") Edit Profile
-                li 
-                    a(href="/users/logout") Log Out
-            else
-                li 
-                    a(href="/login") Login
-                li 
-                    a(href="/join") Join
-
-
 block content
     each fish in videos
         +video(fish)

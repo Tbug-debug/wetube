@@ -6,8 +6,25 @@ html(lang="ko")
     body
         header           
             h1=pageTitle
-            block upload
-          
+            nav
+                ul
+                    li
+                        a(href="/") Home
+                    if loggedIn
+                        li
+                            a(href="/videos/upload") Upload Video
+                        li
+                            a(href="/users/edit") Edit Profile
+                        li
+                            a(href="/users/logout")  Log Out
+                    else
+                        li
+                            a(href="/join")  Join
+                        li
+                            a(href="/login")  Login                        
+                    li
+                        a(href="/search") Search
+
         main
             block content
     include partials/footer

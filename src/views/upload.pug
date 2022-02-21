@@ -1,26 +1,5 @@
 extends base.pug
 
-block upload
-    nav
-        ul
-            if loggedIn
-                li 
-                    a(href="users/edit") Edit Profile
-                li 
-                    a(href="/users/logout") Log Out
-                li 
-                    a(href="/my-profile") #{loggedInUser.name} Profile
-            else
-                li 
-                    a(href="/login") Login
-                li 
-                    a(href="/join") Join
- 
-                li 
-                    a(href="/") Home
-                li 
-                    a(href="/search") Search
-
 block content 
     if errorMessage
         span=errorMessage
