@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-app.use(localMiddleware); //pug engin과 세션 object는 호환이 안되므로 호환이 되는 local을 만들음.
+app.use(localMiddleware); //pug engin과 세션 object는 호환이 안되므로 호환이 되는 local object를 만들음.
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
