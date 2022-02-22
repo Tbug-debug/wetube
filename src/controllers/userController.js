@@ -190,12 +190,13 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username, location },
+    file,
   } = req;
+  console.log(file);
   //const id = req.session.user.id
-  console.log(req.session.user);
   const pageTitle = "Edit Profile";
   const emailAddress = await User.findOne({ email });
   const userName = await User.findOne({ username });
@@ -218,6 +219,8 @@ export const postEdit = async (req, res) => {
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
+      //user가 이미지 파일을 보낼때와 안보낼때를 구별하기 위해 쓴 if문.
       name,
       email,
       username,
