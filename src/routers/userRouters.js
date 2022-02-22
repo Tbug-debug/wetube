@@ -12,7 +12,7 @@ import {
 import {
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadFiles,
+  avatarUpload,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -22,7 +22,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 //왼쪽에서 오른쪽 순으로 자바스크립트가 읽어나간다.
 //즉 파일을 avatar로부터 uploads파일에 저장하고나서 postEdit이 실행된다.
 userRouter
@@ -32,6 +32,7 @@ userRouter
   .post(postChangePassword);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
-userRouter.get(":id", see);
+
+userRouter.get("/:id", see);
 
 export default userRouter;
