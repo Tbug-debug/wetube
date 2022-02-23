@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Video from "../models/Video";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -272,7 +273,9 @@ export const postChangePassword = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("videos");
+  /*여기 또한 populate를 이용하여 mongoose가 User model에서 ref:"Video"를 참고하여,
+    Video에 있는 정보들을 불러와 준다.*/
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found" });
   }
