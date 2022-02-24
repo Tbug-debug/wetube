@@ -28,16 +28,25 @@ export const watch = async (req, res) => {
 };
 
 export const getEdit = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { id } = req.params;
   const video = await Video.findById(id);
   //findById 사용 이유: objec를 edit template으로 보내줘야 하기 때문에 findById가 적헙하다.
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not foun" });
   }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
   return res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
 };
 
 export const postEdit = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id });
@@ -45,6 +54,9 @@ export const postEdit = async (req, res) => {
   //exists 사용 이유: 여기서는 video object가 필요하지않다. 단순히 영상이 존재하는지만 확인하면 된다.
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not foun" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
   }
   await Video.findByIdAndUpdate(id, {
     //findByIdAndUpdate는 id 값을 인자로 받는다.
@@ -90,7 +102,16 @@ export const postUpload = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  const {
+    user: { _id },
+  } = req.session;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "404 Video not foun" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
   await Video.findByIdAndDelete(id);
   return res.redirect("/");
 };

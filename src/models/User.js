@@ -15,7 +15,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 5);
+  if (this.isModified("password")) {
+    //upload 하여 save할때마다 hash값이 한번더 해쉬가 되어 유저가 이전 계정으로 들어가지 못하는 문제를 해결하였다.
+    this.password = await bcrypt.hash(this.password, 5);
+  }
 });
 
 const User = mongoose.model("User", userSchema);
