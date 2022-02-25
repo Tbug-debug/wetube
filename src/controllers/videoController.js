@@ -8,7 +8,9 @@ callback 구 버전
 */
 
 export const home = async (req, res) => {
-  const videos = await Video.find({}).sort({ createdAt: "desc" });
+  const videos = await Video.find({})
+    .sort({ createdAt: "desc" })
+    .populate("owner");
   return res.render("home", { pageTitle: "Home", videos });
 };
 //promise 신버전
@@ -126,7 +128,7 @@ export const search = async (req, res) => {
         $regex: new RegExp(`${keyword}$`, "i"),
         //정규표현식을 이용하여 사용자가 원하는 것을 찾게 도와줌.
       },
-    });
+    }).populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
 };

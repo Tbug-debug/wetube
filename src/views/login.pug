@@ -11,7 +11,8 @@ block content
         br
         a(href="/users/github/start") Continue with Github &rarr;
 
-   hr
-   div 
-      span Don't have an account? 
-      a(href="/join") Creat one now &rarr;
+
+         include partials/social-login
+   div.auth-switch
+        span Already have an account? 
+        a(href="/join") Create one now &rarr;
