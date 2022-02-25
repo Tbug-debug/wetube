@@ -37,7 +37,7 @@ app.use(
 app.use(localMiddleware); //pug engin과 세션 object는 호환이 안되므로 호환이 되는 local object를 만들음.
 app.use("/uploads", express.static("uploads"));
 // Express에게 /uploads/ 폴더의 내용을 보여주는 역할을 함. (이것은 AvatarUrl을 읽을 수 있게 함.)
-app.use("/assets", express.static("assets"));
+app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
