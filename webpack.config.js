@@ -2,7 +2,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   //모든 webpack 파일의 시작점을 나타낸다.
   mode: "development",
   watch: true,
@@ -13,7 +16,8 @@ module.exports = {
     //MiniCssExtractPlugin는 css파일을 별개로 분리해서 만드는 프로그램이다.
   ],
   output: {
-    filename: "js/main.js",
+    filename: "js/[name].js",
+    //다른 이름의 파일이 생성되게 []를 사용함.
     path: path.resolve(__dirname, "assets"),
     //파일의 절대경로를 출력한다.
     clean: true,

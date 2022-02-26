@@ -8,6 +8,7 @@ html(lang="ko")
         include partials/header
         main
             block content
-    include partials/footer
-    script(src="/static/js/main.js")
-    
+        include partials/footer
+    block scripts
+//-
+    assets/js/main.js를 base.pug랑 연결시키는 역할을 한다.
