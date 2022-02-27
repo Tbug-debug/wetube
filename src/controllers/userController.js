@@ -195,7 +195,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
   //const id = req.session.user.id
   const pageTitle = "Edit Profile";
   const emailAddress = await User.findOne({ email });
