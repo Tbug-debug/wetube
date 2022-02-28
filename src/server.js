@@ -6,6 +6,7 @@ import rootRouter from "./routers/rootRouter"; //default로 export를 하였을�
 import videoRouter from "./routers/videoRouters";
 import userRouter from "./routers/userRouters";
 import { localMiddleware } from "./middlewares";
+import apiRouter from "./routers/apiRouter";
 
 const app = express();
 /*app 변수를 만들어서, express 함수를 호출함.
@@ -41,5 +42,6 @@ app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
+app.use("/api", apiRouter);
 
 export default app;
