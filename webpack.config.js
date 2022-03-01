@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     main: "./src/client/js/main.js",
     videoPlayer: "./src/client/js/videoPlayer.js",
+    recorder: "./src/client/js/recorder.js",
   },
   //모든 webpack 파일의 시작점을 나타낸다.
   mode: "development",
