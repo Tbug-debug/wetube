@@ -1,6 +1,7 @@
 import express from "express"; //node_modules/express에서 express를 import함.
 import morgan from "morgan";
 import session from "express-session"; // express 세션을 호출함.
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter"; //default로 export를 하였을때.
 import videoRouter from "./routers/videoRouters";
@@ -40,7 +41,7 @@ app.use(
     //session 정보를 백엔드에 저장하는 역할을 함.
   })
 );
-
+app.use(flash());
 app.use(localMiddleware); //pug engin과 세션 object는 호환이 안되므로 호환이 되는 local object를 만들음.
 app.use("/uploads", express.static("uploads"));
 // Express에게 /uploads/ 폴더의 내용을 보여주는 역할을 함. (이것은 AvatarUrl을 읽을 수 있게 함.)

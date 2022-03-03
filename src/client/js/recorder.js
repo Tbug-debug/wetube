@@ -80,17 +80,10 @@ const handleDownload = async () => {
   actionBtn.addEventListener("click", handleStart);
 };
 
-const handleStop = () => {
-  actionBtn.removeEventListener("click", handleStop);
-  actionBtn.addEventListener("click", handleDownload);
-  actionBtn.innerText = "Download Recording";
-  recorder.stop();
-};
-
 const handleStart = () => {
-  actionBtn.innerText = "Stop Recording";
+  actionBtn.innerText = "Recording";
+  actionBtn.disabled = true;
   actionBtn.removeEventListener("click", handleStart);
-  actionBtn.addEventListener("click", handleStop);
   //여기서는 EventLinstener를 추가,제거 하고 있다.
   recorder = new MediaRecorder(stream);
   //MediaRecorder한테 stream의 정보를 넘겨준다.
@@ -105,15 +98,24 @@ const handleStart = () => {
     // 미리보기 대신에 자신이 찍은 영상을 보여주게 만들었다.
     video.loop = true;
     video.play();
+    actionBtn.innerText = "Download";
+    actionBtn.disabled = false;
+    actionBtn.addEventListener("click", handleDownload);
   };
   recorder.start();
+  setTimeout(() => {
+    recorder.stop();
+  }, 5000);
 };
 
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     //마이크나 카메라와 같은 미디어 장비들에 접근을 시켜준다.
     audio: false,
-    video: { width: 200, height: 200 },
+    video: {
+      width: 1024,
+      height: 576,
+    },
   });
   video.srcObject = stream;
   //srcObject 라는 곳에다가 stream정보를 저장하고 있다.
