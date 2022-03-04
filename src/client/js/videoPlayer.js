@@ -11,6 +11,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+const textarea = document.getElementById("textarea");
 
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
@@ -27,13 +28,8 @@ const handlePlayClick = (e) => {
 };
 
 const handlePlayPress = (event) => {
-  if (event.keyCode === 32) {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+  if (event.target !== textarea && event.keyCode === 32) {
+    handlePlayClick();
   }
 };
 

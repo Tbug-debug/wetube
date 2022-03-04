@@ -148,3 +148,9 @@ export const registerView = async (req, res) => {
 };
 // status는 render하기 전에 상태 코드를 정할 수 있다.
 // sendStatus는 상태 코드를 보내고 연결을 끝내는 것이다.
+
+export const creatComment = (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  res.end();
+};
