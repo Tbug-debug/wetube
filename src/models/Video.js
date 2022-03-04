@@ -11,6 +11,9 @@ const videoSchema = new mongoose.Schema({
     views: { type: Number, default: 0, required: true },
     rating: { type: Number, default: 0, required: true },
   },
+  comments: [
+    { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Comment" },
+  ],
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   //video는 하나의 유저만을 가지고 있다. 그래서 object를 이용하였다
   //'relationship'을 형성하기 위해서 Video schema에다가 User ObjectId를 넣었다.

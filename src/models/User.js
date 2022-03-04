@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   name: { type: String, required: true },
   location: String,
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
   //user는 video를 만들고 싶은 만큼 만들수 있다. 그것을 이용해서 video arrey를 만들었다.
   //'relationship'을 형성하기 위해서 User schema에다가 Video ObjectId를 넣었다.

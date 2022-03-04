@@ -52,9 +52,8 @@ export const postEdit = async (req, res) => {
   } = req.session;
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
-  const video = await Video.exists({ _id: id });
+  const video = await Video.findById({ _id: id });
   //Video의 object 대신 true false를 받는다.
-  //exists 사용 이유: 여기서는 video object가 필요하지않다. 단순히 영상이 존재하는지만 확인하면 된다.
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Video not foun" });
   }
@@ -68,6 +67,7 @@ export const postEdit = async (req, res) => {
     description,
     hashtags: Video.formatHashtags(hashtags),
   });
+  req.flash("succes", "Changes saved");
   return res.redirect(`/videos/${id}`);
 };
 
