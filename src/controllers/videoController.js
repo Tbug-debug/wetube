@@ -96,6 +96,7 @@ export const postUpload = async (req, res) => {
     //여기서는 2차적으로 user에 arrey에다가 video._id를 push하고 있다.
     //그리하여 video와 user간의 'relationship' 을 만들어 주고 있다.
     user.save();
+    req.flash("succes", "Edit Complete");
     return res.redirect("/");
   } catch (error) {
     return res.status(400).render("upload", {
@@ -118,6 +119,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndDelete(id);
+  req.flash("succes", "Delete Complete!");
   return res.redirect("/");
 };
 

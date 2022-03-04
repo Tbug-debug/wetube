@@ -50,6 +50,7 @@ export const postJoin = async (req, res) => {
       location,
       // 유저를 만들고 있다.
     });
+    req.flash("succes", "Complete!");
     return res.redirect("/login");
   } catch (error) {
     return res.status(400).render("join", {
@@ -187,6 +188,7 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
+
 export const postEdit = async (req, res) => {
   const {
     session: {
@@ -228,6 +230,7 @@ export const postEdit = async (req, res) => {
     { new: true }
   );
   req.session.user = updateUser;
+  req.flash("succes", "Profile changed");
   return res.redirect("/users/edit");
 };
 
@@ -237,6 +240,7 @@ export const getChangePassword = (req, res) => {
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
+
 export const postChangePassword = async (req, res) => {
   const {
     session: {
@@ -266,6 +270,7 @@ export const postChangePassword = async (req, res) => {
    세션 정보를 업데이트하여 비밀번호가 바뀌었다는 것을 새로 갱신해야 
    비번 교체후에 로그아웃이 된다.
    */
+  req.flash("succes", "Password changed");
   return res.redirect("/users/logout");
 };
 
