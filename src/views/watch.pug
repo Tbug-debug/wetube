@@ -40,7 +40,10 @@ block content
     div.video__comments
         ul 
             each comment in video.comments.reverse()
-                li.video__comment=comment.text
+                li.video__comment(data-id=comment.id)
+                    span #{comment.text}
+                    if String(video.owner._id) === String(loggedInUser._id)
+                        span#delete__comment ❌
  
 
 block scripts 

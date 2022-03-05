@@ -1,6 +1,7 @@
 import Video from "../models/Video";
 import Comment from "../models/Comments";
 import User from "../models/User";
+import { async } from "regenerator-runtime";
 
 /*Video.find({}, (error, videos) => {
   return res.render("home", {pageTitle: "Home", videos});
@@ -67,7 +68,7 @@ export const postEdit = async (req, res) => {
     description,
     hashtags: Video.formatHashtags(hashtags),
   });
-  req.flash("succes", "Changes saved");
+  req.flash("succes", "Edit Complete");
   return res.redirect(`/videos/${id}`);
 };
 
@@ -96,7 +97,7 @@ export const postUpload = async (req, res) => {
     //여기서는 2차적으로 user에 arrey에다가 video._id를 push하고 있다.
     //그리하여 video와 user간의 'relationship' 을 만들어 주고 있다.
     user.save();
-    req.flash("succes", "Edit Complete");
+    req.flash("succes", "Upload Complete");
     return res.redirect("/");
   } catch (error) {
     return res.status(400).render("upload", {
@@ -119,7 +120,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndDelete(id);
-  req.flash("succes", "Delete Complete!");
+  req.flash("succes", "Delete Complete");
   return res.redirect("/");
 };
 
@@ -171,5 +172,21 @@ export const creatComment = async (req, res) => {
   video.comments.push(comment._id);
   //video comments arrey에 넣어주는 역할
   video.save();
-  return res.sendStatus(201);
+  return res.status(201).json({ newCommentId: comment._id });
+};
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id },
+    session: { user },
+  } = req;
+
+  const comment = await Comment.findById(id);
+
+  if (String(comment.owner) !== String(user._id)) {
+    return res.sendStatus(404);
+  }
+
+  await Comment.findByIdAndDelete(id);
+  return res.sendStatus(200);
 };
