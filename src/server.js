@@ -24,6 +24,9 @@ app.use((req, res, next) => {
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
+//서버가 form으로부터 오는 data를 이해할 수 있게 돕는 middleware
+app.use(express.json());
+//string을 받아서 json으로 변환해주는 middleware
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,

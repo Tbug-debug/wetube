@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import Comment from "../models/Comments";
 import User from "../models/User";
 
 /*Video.find({}, (error, videos) => {
@@ -18,11 +19,10 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   //const id  = req.params.id: 구버전 JavaScript / 위에 것은 ES6 버전.
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id).populate("owner").populate("comments");
   /*방법 2. populate를 하게 되면 mongoose가 Video model에서 ref:"User"를 참고하여,
     User에 있는 정보들을 불러와 준다.*/
-  //const owner = await User.findById(video.owner)
-  // 방법 1.
+  // 방법 1. const owner = await User.findById(video.owner)
   if (!video) {
     return res.render("404", { pageTitle: "404 Video not foun" });
   }
@@ -151,8 +151,25 @@ export const registerView = async (req, res) => {
 // status는 render하기 전에 상태 코드를 정할 수 있다.
 // sendStatus는 상태 코드를 보내고 연결을 끝내는 것이다.
 
-export const creatComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  res.end();
+export const creatComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req;
+
+  const video = await Video.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+  video.comments.push(comment._id);
+  //video comments arrey에 넣어주는 역할
+  video.save();
+  return res.sendStatus(201);
 };
