@@ -97,6 +97,7 @@ export const startGithubLogin = (req, res) => {
     scope: "read:user user:email",
   };
   const params = new URLSearchParams(config).toString();
+  //URL에 쓰기 적합한 형태의 쿼리 문자열을 반환한다.
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
   //github로 client_id와 scope 그리고 allow_signup을 finalUrl로 보낸다.
@@ -111,7 +112,6 @@ export const finishGithubLogin = async (req, res) => {
     code: req.query.code,
   };
   const params = new URLSearchParams(config).toString();
-  //URL에 쓰기 적합한 형태의 쿼리 문자열을 반환한다.
   const finalUrl = `${baseUrl}?${params}`;
   /*그러면 scope에 써져있는 데로 정보를 제공하게 된다.
     동시에 finalUrl에서는 code가 제공된다.
