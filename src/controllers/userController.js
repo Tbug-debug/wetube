@@ -1,6 +1,6 @@
 import User from "../models/User";
 import fetch from "node-fetch";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const getjoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
