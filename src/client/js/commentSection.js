@@ -1,5 +1,3 @@
-import { async } from "regenerator-runtime";
-
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const deleted = document.querySelectorAll("#delete__comment");

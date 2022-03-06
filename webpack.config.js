@@ -11,8 +11,6 @@ module.exports = {
     commentSection: BASE_JS + "commentSection.js",
   },
   //모든 webpack 파일의 시작점을 나타낸다.
-  mode: "development",
-  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
