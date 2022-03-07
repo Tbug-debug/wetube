@@ -1,4 +1,18 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
+
+const s3 = new aws.S3({
+  credentials: {
+    accessKeyId: process.env.AWS_ID,
+    secretAccessKey: process.env.AWS_SECRET,
+  },
+});
+
+const multerUploader = multerS3({
+  s3: s3,
+  bucket: "BorderUploader",
+});
 
 export const localMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -33,6 +47,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fieldSize: 20000000 },
+  storage: multerUploader,
 });
 //절대로!!! 절대로!!! DB에 파일을 저장하면 안됨!!!!!!!!!!!!!!!!!!
 //DB에는 파일의 위치를 저장하는 것!!!!!!!!!!!!!!!!!!!!!!
@@ -40,4 +55,5 @@ export const avatarUpload = multer({
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fieldSize: 30000000 },
+  storage: multerUploader,
 });
