@@ -21,6 +21,7 @@ block content
                     i.fas.fa-expand
 
     div.video__data
+        span.video__hashtags=video.hashtags
         p.video__title=video.title
         small.video__owner Uploaded by 
             a(href=`/users/${video.owner._id}`)=video.owner.name

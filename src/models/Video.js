@@ -23,7 +23,8 @@ const videoSchema = new mongoose.Schema({
 videoSchema.static("formatHashtags", function (hashtags) {
   return hashtags
     .split(",")
-    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+    .map((word) => (word.startsWith("#") ? word : `#${word}`))
+    .join("\xa0");
 });
 //정적 메소드로 import 없이도 Model.function()형태로 사용가능하게 만듬.
 
