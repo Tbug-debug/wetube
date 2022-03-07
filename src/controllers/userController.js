@@ -164,7 +164,7 @@ export const finishGithubLogin = async (req, res) => {
         name: userData.name ? userData.name : "Unknown",
         username: userData.login,
         email: emailObj.email,
-        password: "",
+        password: 1234,
         socialOnly: true,
         location: userData.location,
       });
