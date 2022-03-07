@@ -132,7 +132,7 @@ export const search = async (req, res) => {
   if (keyword) {
     videos = await Video.find({
       title: {
-        $regex: new RegExp(`${keyword}$`, "i"),
+        $regex: new RegExp(keyword, "i"),
         //정규표현식을 이용하여 사용자가 원하는 것을 찾게 도와줌.
       },
     }).populate("owner");
