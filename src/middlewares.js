@@ -9,7 +9,7 @@ const s3 = new aws.S3({
   },
 });
 
-const isHeroku = process.env.NDOE_ENV === "production";
+console.log(process.env.NODE_ENV === "production");
 
 const s3ImageUploader = multerS3({
   s3: s3,
@@ -32,7 +32,6 @@ export const localMiddleware = (req, res, next) => {
   console.log(res.locals);
   res.locals.loggedInUser = req.session.user || {};
   // locals object 안에 loggedInUser를 만들고 그 안에 session user 정보를 넣고 있다.
-  res.locals.isHeroku = isHeroku;
   next();
 };
 
@@ -57,7 +56,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fieldSize: 20000000 },
-  storage: isHeroku ? s3ImageUploader : undefined,
+  storage: s3ImageUploader,
 });
 //절대로!!! 절대로!!! DB에 파일을 저장하면 안됨!!!!!!!!!!!!!!!!!!
 //DB에는 파일의 위치를 저장하는 것!!!!!!!!!!!!!!!!!!!!!!
@@ -65,5 +64,5 @@ export const avatarUpload = multer({
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fieldSize: 30000000 },
-  storage: isHeroku ? s3VideoUploader : undefined,
+  storage: s3VideoUploader,
 });
