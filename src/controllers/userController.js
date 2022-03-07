@@ -217,10 +217,11 @@ export const postEdit = async (req, res) => {
       errorMessage: "This already exist email",
     });
   }
+  const isHeroku = process.env.NODE_ENV === "production";
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.location : avatarUrl,
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
       //user가 이미지 파일을 보낼때와 안보낼때를 구별하기 위해 쓴 if문.
       name,
       email,
