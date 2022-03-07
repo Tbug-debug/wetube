@@ -220,7 +220,7 @@ export const postEdit = async (req, res) => {
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? file.location : avatarUrl,
       //user가 이미지 파일을 보낼때와 안보낼때를 구별하기 위해 쓴 if문.
       name,
       email,
