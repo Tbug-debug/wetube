@@ -29,6 +29,7 @@ const handlePlayClick = (e) => {
 
 const handlePlayPress = (event) => {
   if (event.target !== textarea && event.keyCode === 32) {
+    //스페이스바를 채팅창에서와 비디오에서 클릭했을때를 구분하는 역할.
     handlePlayClick();
   }
 };
@@ -46,6 +47,7 @@ const handleMuteClick = (e) => {
 };
 
 const handleVolumeChange = (event) => {
+  //볼륨을 드레그하여 조절 하는 부분.
   const {
     target: { value },
   } = event;
@@ -63,22 +65,29 @@ const handleVolumeChange = (event) => {
 
 const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substring(14, 19);
+//비디오 플레어의 시간 정보 포멧을 담당하고 있다.
 
 const handleLoadedMetadata = () => {
+  //전체 비디오 시간 정보를 담당하고 있다.
   totalTime.innerText = formatTime(Math.floor(video.duration));
   timeline.max = Math.floor(video.duration);
 };
 const handleTimeUpdate = () => {
+  //현재 재생중인 비디오 시간을 담당하고 있다.
   currenTime.innerText = formatTime(Math.floor(video.currentTime));
   timeline.value = Math.floor(video.currentTime);
 };
+
 const handleTimelineChange = (event) => {
+  //비디오를 드레그하여 조절하는 부분을 담당하고 있다.
   const {
     target: { value },
   } = event;
   video.currentTime = value;
 };
+
 const handleFullscreen = () => {
+  //전체화면을 담당하고 있다.
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
     document.exitFullscreen();
