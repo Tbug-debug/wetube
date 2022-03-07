@@ -16,6 +16,9 @@ block content
         input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
         div.submit__btn
             input(type="submit", value="Update Profile")
-        hr
-        div.edit-profile__password
-            a(href="change-password") Change Password &rarr;
+        if !loggedInUser.socialOnly
+            hr
+            div.edit-profile__password
+                a(href="change-password") Change Password &rarr;
+        //-
+            만약 소셜 로그인이 비밀번호를 바꾸고 싶다면 if !loggedInUser.socialOnly를 지우면 된다.

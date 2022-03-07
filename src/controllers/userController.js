@@ -68,6 +68,7 @@ export const postLogin = async (req, res) => {
   const user = await User.findOne({ username, socialOnly: false });
   // user 정보와 github를 통안 로그인이 아닌 회원가입을 했는지 db에서 찾는 역할을 한다.
   //socialOnly가 false인 경우 wetube 홈페이지에서만 로그인이 가능하다.
+  //만약 소셜 로그인도 로그인을 홈페이지에서 하고 싶다면 socialOnly: false를 지우면 된다.
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -239,6 +240,7 @@ export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
     return res.redirect("/");
   }
+  //만약 소셜 로그인도 비밀번호를 바꾸고 싶다면 if문을 지우면 된다.
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
