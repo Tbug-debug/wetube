@@ -116,6 +116,7 @@ const handleEnded = () => {
 };
 
 if (video.readyState == 4) {
+  //비디오의 정보가 충분히 불러와졌을때 실행하라는 것.
   handleLoadedMetadata();
 }
 
