@@ -9,9 +9,15 @@ const s3 = new aws.S3({
   },
 });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "mybuvok",
+  bucket: "mybuvok/images",
+  acl: "public-read",
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "mybuvok/videos",
   acl: "public-read",
 });
 
@@ -48,7 +54,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fieldSize: 20000000 },
-  storage: multerUploader,
+  storage: s3ImageUploader,
 });
 //절대로!!! 절대로!!! DB에 파일을 저장하면 안됨!!!!!!!!!!!!!!!!!!
 //DB에는 파일의 위치를 저장하는 것!!!!!!!!!!!!!!!!!!!!!!
@@ -56,5 +62,5 @@ export const avatarUpload = multer({
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fieldSize: 30000000 },
-  storage: multerUploader,
+  storage: s3VideoUploader,
 });
