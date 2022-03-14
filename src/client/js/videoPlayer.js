@@ -72,6 +72,7 @@ const handleLoadedMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
   timeline.max = Math.floor(video.duration);
 };
+
 const handleTimeUpdate = () => {
   //현재 재생중인 비디오 시간을 담당하고 있다.
   currenTime.innerText = formatTime(Math.floor(video.currentTime));
